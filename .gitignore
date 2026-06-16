@@ -108,3 +108,18 @@ cache
 uv.lock
 
 vitb16
+
+datasets/
+data/
+checkpoints/
+results/full_logs/
+wandb/
+__pycache__/
+.venv/
+venv/
+.mypy_cache/
+.DS_Store
+*.pt
+*.pth
+*.ckpt
+*.zip
