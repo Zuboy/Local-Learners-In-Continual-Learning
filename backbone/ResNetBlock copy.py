@@ -104,7 +104,7 @@ class PreActBlock(nn.Module):
         out = F.relu(self.bn1(x))
         shortcut = self.shortcut(out)
         out = self.conv1(out)
-        out = self.conv2(F.relu(self.bn2(out)))
+        out = self.conv2(F.relu(self.bn2(out)))             #here implement the local heads and use detach , but find a way around shortcut ,so it dosent be redundent
         out += shortcut
         return out
 
