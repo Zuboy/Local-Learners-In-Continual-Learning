@@ -41,7 +41,7 @@ class LocalDerpp(ContinualModel):
         for head_id, outputs in enumerate(outputs_all):
             weight = (
                 1.0 if head_id == len(outputs_all) - 1
-                else self.local_loss_weight
+                else self.args.local_loss_weight
             )
             head_losses.append(weight * self.loss(outputs, labels))
 
