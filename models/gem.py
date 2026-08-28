@@ -10,7 +10,7 @@ from utils.conf import warn_once
 
 from models.utils.continual_model import ContinualModel
 from utils.args import add_rehearsal_args, ArgumentParser
-from utils.buffer import Buffer, fill_buffer
+from utils.buffer import Buffer
 
 
 def store_grad(params, grads, grad_dims):
@@ -114,7 +114,32 @@ class Gem(ContinualModel):
         self.grads_cs.append(torch.zeros(
             np.sum(self.grad_dims)).to(self.device))
 
-        fill_buffer(self.buffer, dataset, self.current_task, required_attributes=['examples', 'labels', 'task_labels'])
+        # `fill_buffer` selects current-task data by class range, which breaks on
+        # domain-il (every task has the same labels). Split the buffer evenly by
+        # task instead, via task_labels: works for class-il and domain-il.
+        examples_per_task = self.args.buffer_size // (self.current_task + 1)
+
+        if len(self.buffer) > 0:
+            buf_x, buf_y, buf_tl = self.buffer.get_all_data()
+            self.buffer.empty()
+            for tt in buf_tl.unique():
+                idx = (buf_tl == tt)
+                self.buffer.add_data(
+                    examples=buf_x[idx][:examples_per_task],
+                    labels=buf_y[idx][:examples_per_task],
+                    task_labels=buf_tl[idx][:examples_per_task])
+
+        counter = 0
+        for data in dataset.train_loader:
+            y, not_aug_x = data[1], data[2]
+            if counter >= examples_per_task:
+                break
+            take = min(examples_per_task - counter, not_aug_x.shape[0])
+            self.buffer.add_data(
+                examples=not_aug_x[:take],
+                labels=y[:take],
+                task_labels=torch.full((take,), self.current_task, dtype=torch.long))
+            counter += take
 
     def observe(self, inputs, labels, not_aug_inputs, epoch=None):
 

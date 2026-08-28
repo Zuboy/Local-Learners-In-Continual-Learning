@@ -4,12 +4,12 @@ import torch
 from models.gem import store_grad, overwrite_grad, project2cone2
 from models.utils.continual_model import ContinualModel
 from utils.args import add_rehearsal_args, ArgumentParser
-from utils.buffer import Buffer, fill_buffer
+from utils.buffer import Buffer
 from utils.conf import warn_once
 
 
 class LocalGem(ContinualModel):
-    """Local learning variant of GEM: gradient projection applied per local head."""
+    """26.06.26 Local learning variant of GEM: gradient projection applied per local head."""
     NAME = 'local-gem'
     COMPATIBILITY = ['class-il', 'domain-il', 'task-il']
 
@@ -24,22 +24,20 @@ class LocalGem(ContinualModel):
         super().__init__(backbone, loss, args, transform, dataset=dataset)
         self.buffer = Buffer(self.args.buffer_size)
 
-        # params[0] = fc1 + local_head1, params[1] = fc2 + local_head2
+        # same like local MNISTMLP
         self.params = [
             list(self.net.fc1.parameters()) + list(self.net.local_head1.parameters()),
             list(self.net.fc2.parameters()) + list(self.net.local_head2.parameters()),
         ]
-        self.opt1 = self.get_optimizer(self.params[0])
+        self.opt1 = self.get_optimizer(self.params[0])  # self optmizers
         self.opt2 = self.get_optimizer(self.params[1])
         self.head_optimizers = [self.opt1, self.opt2]
 
-        # per-head: number of scalars per parameter tensor
+        #NEW local , per head storage 2 flat list past gradients
         self.grad_dims = [[p.data.numel() for p in pg] for pg in self.params]
-
-        # per-head per-task memory gradient storage; grows by one entry in end_task
         self.grads_cs = [[], []]
 
-        # per-head current-data gradient buffer
+        # current gradient 
         self.grads_da = [
             torch.zeros(sum(self.grad_dims[0])).to(self.device),
             torch.zeros(sum(self.grad_dims[1])).to(self.device),
@@ -57,27 +55,49 @@ class LocalGem(ContinualModel):
         self.solver = solver
 
     def end_task(self, dataset):
-        # allocate gradient storage for the task that just ended
+        # allocate new storage for the task that just ended
         for head_id in range(2):
             self.grads_cs[head_id].append(
                 torch.zeros(sum(self.grad_dims[head_id])).to(self.device)
             )
-        fill_buffer(self.buffer, dataset, self.current_task,
-                    required_attributes=['examples', 'labels', 'task_labels'])
+        # `fill_buffer` selects current-task data by class range, which breaks on
+        # domain-il (every task has the same labels 0-9). Split the buffer evenly
+    
+        examples_per_task = self.args.buffer_size // (self.current_task + 1)
+
+        if len(self.buffer) > 0:
+            buf_x, buf_y, buf_tl = self.buffer.get_all_data()
+            self.buffer.empty()
+            for tt in buf_tl.unique():
+                idx = (buf_tl == tt)
+                self.buffer.add_data(
+                    examples=buf_x[idx][:examples_per_task],
+                    labels=buf_y[idx][:examples_per_task],
+                    task_labels=buf_tl[idx][:examples_per_task])
+
+        counter = 0
+        for data in dataset.train_loader:
+            y, not_aug_x = data[1], data[2]
+            if counter >= examples_per_task:
+                break
+            take = min(examples_per_task - counter, not_aug_x.shape[0])
+            self.buffer.add_data(
+                examples=not_aug_x[:take],
+                labels=y[:take],
+                task_labels=torch.full((take,), self.current_task, dtype=torch.long))
+            counter += take
 
     def observe(self, inputs, labels, not_aug_inputs, epoch=None):
         if not self.buffer.is_empty():
             buf_inputs, buf_labels, buf_task_labels = self.buffer.get_data(
                 self.args.buffer_size, transform=self.transform, device=self.device)
 
-            for tt in buf_task_labels.unique():
+            for tt in buf_task_labels.unique(): #seen task 
                 for opt in self.head_optimizers:
                     opt.zero_grad()
 
                 cur_task_inputs = buf_inputs[buf_task_labels == tt]
                 cur_task_labels = buf_labels[buf_task_labels == tt]
-
-                # local_forward detaches h1 before fc2, so loss1/loss2 have disjoint graphs
                 out1, out2 = self.net.local_forward(cur_task_inputs)
                 self.loss(out1, cur_task_labels).backward()
                 self.loss(out2, cur_task_labels).backward()
@@ -95,7 +115,7 @@ class LocalGem(ContinualModel):
         loss2 = self.loss(out2, labels)
         loss1.backward()
         loss2.backward()
-
+    #core block
         if not self.buffer.is_empty():
             for h in range(2):
                 store_grad(lambda h=h: iter(self.params[h]),

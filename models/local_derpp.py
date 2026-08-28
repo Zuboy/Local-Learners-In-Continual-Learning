@@ -55,12 +55,12 @@ class LocalDerpp(ContinualModel):
             for head_id, buf_outputs in enumerate(buf_outputs_all):     #loop over heads with old logits
                 old_logits = buf_logits_all[:, head_id, :]
                 replay_loss = (
-                    self.alpha * F.mse_loss(buf_outputs, old_logits) +
-                    self.beta * self.loss(buf_outputs, buf_labels)
+                    self.args.alpha * F.mse_loss(buf_outputs, old_logits) +
+                    self.args.beta * self.loss(buf_outputs, buf_labels)
                 )
                 weight = (
                     1.0 if head_id == len(buf_outputs_all) - 1
-                    else self.local_loss_weight
+                    else self.args.local_loss_weight
                 )
                 head_losses[head_id] += weight * replay_loss
 

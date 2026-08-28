@@ -18,6 +18,7 @@ class LocalEr(ContinualModel):
         super().__init__(backbone, loss, args, transform, dataset=dataset)
 
         self.buffer = Buffer(self.args.buffer_size)
+        # slef.buffer = buffer(fc1)
         self.self_opt()
 
     def self_opt(self):
