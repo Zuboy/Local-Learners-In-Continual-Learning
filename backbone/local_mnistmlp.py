@@ -18,36 +18,37 @@ class LocalMNISTMLP(MammothBackbone):
         self.local_head1 = nn.Linear(hidden_size, num_classes)
         self.local_head2 = nn.Linear(hidden_size, num_classes)
 
-        # self.classifier = nn.Linear(hidden_size, num_classes)
+        self.blocks = [self.fc1, self.fc2]
+        self.heads = [self.local_head1, self.local_head2]
 
 
 ##########################################################################
-#self learning , local heads
+# self learning , local heads
     def forward(self, x, returnt='out'):
-        x = x.view(-1, num_flat_features(x))
-        h1 = F.relu(self.fc1(x))                    # L1
-        h2 = F.relu(self.fc2(h1))                   # L2
-        out = self.local_head2(h2)
+        
+        h = x.view(-1, num_flat_features(x))
+        for block in self.blocks:
+            h = F.relu(block(h))
+        out = self.heads[-1](h)
 
         if returnt == 'out':
             return out
         elif returnt == 'features':
-            return h2
+            return h
         elif returnt == 'full':
-            return out, h2
+            return out, h
 
         raise NotImplementedError("Unknown return type")
 
     def local_forward(self, x):
-        x = x.view(-1, num_flat_features(x))
+        h = x.view(-1, num_flat_features(x))
+        outs = []
+        for block, head in zip(self.blocks, self.heads):
+            h = F.relu(block(h))
+            outs.append(head(h))
+            h = h.detach()          # decouple the next block from this one
+        return outs
 
-        h1 = F.relu(self.fc1(x))
-        out1 = self.local_head1(h1)    
-        h2 = F.relu(self.fc2(h1.detach()))  #only L2 
-        out2 = self.local_head2(h2)
-
-        return out1, out2
-    
     def forward_all_heads(self, x):
         return self.local_forward(x)
 

@@ -18,19 +18,14 @@ class LocalEr(ContinualModel):
         super().__init__(backbone, loss, args, transform, dataset=dataset)
 
         self.buffer = Buffer(self.args.buffer_size)
-        # slef.buffer = buffer(fc1)
         self.self_opt()
 
     def self_opt(self):
-        self.opt1 = self.get_optimizer(
-            list(self.net.fc1.parameters()) +
-            list(self.net.local_head1.parameters())
-        )
-        self.opt2 = self.get_optimizer(
-            list(self.net.fc2.parameters()) +
-            list(self.net.local_head2.parameters())
-        )
-        self.local_optimizers = [self.opt1, self.opt2]
+        assert hasattr(self.net, 'blocks') and hasattr(self.net, 'heads')
+        self.local_optimizers = [
+            self.get_optimizer(list(block.parameters()) + list(head.parameters()))
+            for block, head in zip(self.net.blocks, self.net.heads)
+        ]
 
     def observe(self, inputs, labels, not_aug_inputs, epoch=None):
         real_batch_size = inputs.shape[0]
@@ -41,27 +36,21 @@ class LocalEr(ContinualModel):
                 transform=self.transform,
                 device=self.device
             )
-
             inputs = torch.cat((inputs, buf_inputs))
             labels = torch.cat((labels, buf_labels))
-        for optimizer in self.local_optimizers:
+        outputs = self.net.forward_all_heads(inputs)
+
+        total_loss = 0.0
+        for out, optimizer in zip(outputs, self.local_optimizers):
             optimizer.zero_grad()
-
-        out1, out2 = self.net.local_forward(inputs)
-        loss1 = self.loss(out1, labels)
-        loss2 = self.loss(out2, labels)
-
-        loss1.backward()
-        self.opt1.step()
-
-        loss2.backward()
-        self.opt2.step()
+            loss = self.loss(out, labels)
+            loss.backward()
+            optimizer.step()
+            total_loss += loss.item()
 
         self.buffer.add_data(
             examples=not_aug_inputs,
             labels=labels[:real_batch_size]
         )
-
-        total_loss = loss1.item() + loss2.item()
 
         return total_loss

@@ -24,23 +24,22 @@ class LocalGem(ContinualModel):
         super().__init__(backbone, loss, args, transform, dataset=dataset)
         self.buffer = Buffer(self.args.buffer_size)
 
-        # same like local MNISTMLP
-        self.params = [
-            list(self.net.fc1.parameters()) + list(self.net.local_head1.parameters()),
-            list(self.net.fc2.parameters()) + list(self.net.local_head2.parameters()),
-        ]
-        self.opt1 = self.get_optimizer(self.params[0])  # self optmizers
-        self.opt2 = self.get_optimizer(self.params[1])
-        self.head_optimizers = [self.opt1, self.opt2]
+        # param group + optimizer per (block, head) pair, built in one loop
+        assert hasattr(self.net, 'blocks') and hasattr(self.net, 'heads'), \
+            "local-gem needs a local backbone exposing `blocks` and `heads` (e.g. local-mnistmlp)."
+        self.params, self.head_optimizers = [], []
+        for block, head in zip(self.net.blocks, self.net.heads):
+            param_group = list(block.parameters()) + list(head.parameters())
+            self.params.append(param_group)
+            self.head_optimizers.append(self.get_optimizer(param_group))
 
-        #NEW local , per head storage 2 flat list past gradients
+        self.n_heads = len(self.params)
+
+        # per-head storage: flat past-task gradients + current gradient
         self.grad_dims = [[p.data.numel() for p in pg] for pg in self.params]
-        self.grads_cs = [[], []]
-
-        # current gradient 
+        self.grads_cs = [[] for _ in range(self.n_heads)]
         self.grads_da = [
-            torch.zeros(sum(self.grad_dims[0])).to(self.device),
-            torch.zeros(sum(self.grad_dims[1])).to(self.device),
+            torch.zeros(sum(dims)).to(self.device) for dims in self.grad_dims
         ]
 
         try:
@@ -55,14 +54,11 @@ class LocalGem(ContinualModel):
         self.solver = solver
 
     def end_task(self, dataset):
-        # allocate new storage for the task that just ended
-        for head_id in range(2):
+        for head_id in range(self.n_heads):
             self.grads_cs[head_id].append(
                 torch.zeros(sum(self.grad_dims[head_id])).to(self.device)
             )
-        # `fill_buffer` selects current-task data by class range, which breaks on
-        # domain-il (every task has the same labels 0-9). Split the buffer evenly
-    
+
         examples_per_task = self.args.buffer_size // (self.current_task + 1)
 
         if len(self.buffer) > 0:
@@ -88,52 +84,46 @@ class LocalGem(ContinualModel):
             counter += take
 
     def observe(self, inputs, labels, not_aug_inputs, epoch=None):
-        if not self.buffer.is_empty():
+        has_memory = not self.buffer.is_empty()
+
+        # past-task gradients, one flat vector per (task, head)
+        if has_memory:
             buf_inputs, buf_labels, buf_task_labels = self.buffer.get_data(
                 self.args.buffer_size, transform=self.transform, device=self.device)
 
-            for tt in buf_task_labels.unique(): #seen task 
-                for opt in self.head_optimizers:
-                    opt.zero_grad()
-
+            for tt in buf_task_labels.unique():  # seen task
                 cur_task_inputs = buf_inputs[buf_task_labels == tt]
                 cur_task_labels = buf_labels[buf_task_labels == tt]
-                out1, out2 = self.net.local_forward(cur_task_inputs)
-                self.loss(out1, cur_task_labels).backward()
-                self.loss(out2, cur_task_labels).backward()
+                outs = self.net.local_forward(cur_task_inputs)
 
-                for h in range(2):
+                for h, (out, optimizer) in enumerate(zip(outs, self.head_optimizers)):
+                    optimizer.zero_grad()
+                    self.loss(out, cur_task_labels).backward()
                     store_grad(lambda h=h: iter(self.params[h]),
                                self.grads_cs[h][tt], self.grad_dims[h])
 
-        # current-data gradients
-        for opt in self.head_optimizers:
-            opt.zero_grad()
+        # current data: per head -> backward, project if it conflicts, step
+        outs = self.net.local_forward(inputs)
 
-        out1, out2 = self.net.local_forward(inputs)
-        loss1 = self.loss(out1, labels)
-        loss2 = self.loss(out2, labels)
-        loss1.backward()
-        loss2.backward()
-    #core block
-        if not self.buffer.is_empty():
-            for h in range(2):
+        total_loss = 0.0
+        for h, (out, optimizer) in enumerate(zip(outs, self.head_optimizers)):
+            optimizer.zero_grad()
+            loss = self.loss(out, labels)
+            loss.backward()
+            total_loss += loss.item()
+
+            if has_memory:
                 store_grad(lambda h=h: iter(self.params[h]),
                            self.grads_da[h], self.grad_dims[h])
 
-            for h in range(2):
-                dot_prod = torch.mm(
-                    self.grads_da[h].unsqueeze(0),
-                    torch.stack(self.grads_cs[h]).T
-                )
+                memories = torch.stack(self.grads_cs[h]).T
+                dot_prod = torch.mm(self.grads_da[h].unsqueeze(0), memories)
                 if (dot_prod < 0).sum() != 0:
                     project2cone2(self.solver, self.grads_da[h].unsqueeze(1),
-                                  torch.stack(self.grads_cs[h]).T,
-                                  margin=self.args.gamma)
+                                  memories, margin=self.args.gamma)
                     overwrite_grad(lambda h=h: iter(self.params[h]),
                                    self.grads_da[h], self.grad_dims[h])
 
-        for opt in self.head_optimizers:
-            opt.step()
+            optimizer.step()
 
-        return loss1.item() + loss2.item()
+        return total_loss
