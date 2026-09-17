@@ -1,0 +1,94 @@
+Job 3239528: Running on node(s) kusel
+Job 3239528: Started at 2026-08-02 05:05:32+0200
+Monitor this job here: http://monitoring.pegasus.kl.dfki.de/d/slurm-job-details/job-details?var-jobid=3239528&from=1785639932000
+srun: jobinfo: version v1.0.0
+Job 3239528: Running on node(s) kusel
+Job 3239528: Started at 2026-08-02 05:05:32+0200
+Monitor this job here: http://monitoring.pegasus.kl.dfki.de/d/slurm-job-details/job-details?var-jobid=3239528&from=1785639932000
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+
+[notice] A new release of pip is available: 23.3.1 -> 26.2
+[notice] To update, run: python -m pip install --upgrade pip
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+/usr/local/lib/python3.10/dist-packages/open_clip/factory.py:388: UserWarning: These pretrained weights were trained with QuickGELU activation but the model config does not have that enabled. Consider using a model config with a "-quickgelu" suffix or enable with a flag.
+  warnings.warn(
+Accuracy for 1 task(s): [Domain-IL]: 90.67 %
+	Raw accuracy values: Domain-IL [90.67]
+
+
+Accuracy for 2 task(s): [Domain-IL]: 88.58 %
+	Raw accuracy values: Domain-IL [85.18, 91.99000000000001]
+
+
+Accuracy for 3 task(s): [Domain-IL]: 89.79 %
+	Raw accuracy values: Domain-IL [91.97999999999999, 84.02, 93.36]
+
+
+Accuracy for 4 task(s): [Domain-IL]: 90.59 %
+	Raw accuracy values: Domain-IL [88.81, 93.63, 85.81, 94.11]
+
+
+Accuracy for 5 task(s): [Domain-IL]: 92.3 %
+	Raw accuracy values: Domain-IL [93.99, 93.07, 88.25, 91.13, 95.04]
+
+
+Accuracy for 6 task(s): [Domain-IL]: 92.79 %
+	Raw accuracy values: Domain-IL [92.82000000000001, 94.82000000000001, 85.00999999999999, 93.06, 95.21, 95.8]
+
+
+Accuracy for 7 task(s): [Domain-IL]: 92.77 %
+	Raw accuracy values: Domain-IL [90.13, 95.89999999999999, 82.86, 95.78999999999999, 93.38, 95.54, 95.78999999999999]
+
+
+Accuracy for 8 task(s): [Domain-IL]: 90.69 %
+	Raw accuracy values: Domain-IL [86.95, 93.57, 79.31, 94.57, 89.73, 92.09, 94.39, 94.89999999999999]
+
+
+Accuracy for 9 task(s): [Domain-IL]: 91.12 %
+	Raw accuracy values: Domain-IL [85.38, 93.71000000000001, 78.17, 95.25, 89.01, 91.97, 94.97, 95.57, 96.05]
+
+
+Accuracy for 10 task(s): [Domain-IL]: 91.94 %
+	Raw accuracy values: Domain-IL [94.84, 91.92, 94.07, 91.56, 93.69, 92.43, 91.22, 85.69, 88.72, 95.3]
+
+
+Accuracy for 11 task(s): [Domain-IL]: 93.78 %
+	Raw accuracy values: Domain-IL [92.52, 96.07, 86.71, 96.41999999999999, 94.32000000000001, 95.72, 96.6, 92.09, 94.39, 90.2, 96.57]
+
+
+Accuracy for 12 task(s): [Domain-IL]: 90.88 %
+	Raw accuracy values: Domain-IL [93.67999999999999, 90.61, 95.66, 90.05, 92.01, 90.59, 89.74, 81.12, 85.6, 95.45, 90.29, 95.71]
+
+
+Accuracy for 13 task(s): [Domain-IL]: 91.09 %
+	Raw accuracy values: Domain-IL [88.4, 91.44, 86.56, 92.95, 88.72, 90.02, 92.78, 95.49, 95.30999999999999, 88.64999999999999, 92.41, 85.91, 95.5]
+
+
+Accuracy for 14 task(s): [Domain-IL]: 87.89 %
+	Raw accuracy values: Domain-IL [88.94999999999999, 85.33, 93.84, 85.98, 85.47, 84.08, 85.31, 85.18, 86.52, 92.46, 85.41, 94.74000000000001, 81.99, 95.25]
+
+
+Accuracy for 15 task(s): [Domain-IL]: 89.69 %
+	Raw accuracy values: Domain-IL [85.72999999999999, 88.35, 87.8, 90.60000000000001, 84.8, 86.3, 89.97, 95.15, 94.36, 87.42999999999999, 89.73, 88.14999999999999, 95.78, 85.32, 95.81]
+
+
+Accuracy for 16 task(s): [Domain-IL]: 91.39 %
+	Raw accuracy values: Domain-IL [95.36, 89.47, 95.91, 89.35, 93.13, 90.09, 89.07000000000001, 88.32, 88.89, 96.43, 89.05, 95.53, 87.53999999999999, 91.25, 86.42999999999999, 96.43]
+
+
+Accuracy for 17 task(s): [Domain-IL]: 92.05 %
+	Raw accuracy values: Domain-IL [95.04, 95.13000000000001, 91.69, 94.42, 95.91, 96.07, 94.34, 89.4, 91.52, 94.11, 94.89999999999999, 90.16, 85.69, 81.96, 84.03, 94.11, 96.39]
+
+
+Accuracy for 18 task(s): [Domain-IL]: 91.44 %
+	Raw accuracy values: Domain-IL [96.63000000000001, 92.95, 94.34, 91.07, 95.86, 94.36, 90.96, 84.85000000000001, 86.76, 96.53, 91.64999999999999, 93.67, 81.84, 86.26, 79.34, 96.53, 95.19, 97.05]
+
+
+Accuracy for 19 task(s): [Domain-IL]: 91.28 %
+	Raw accuracy values: Domain-IL [96.81, 93.84, 92.44, 91.82000000000001, 96.94, 95.55, 91.88, 84.17, 86.96000000000001, 95.73, 93.2, 90.73, 80.06, 80.52, 77.64, 95.73, 96.48, 96.66, 97.15]
+
+
+Accuracy for 20 task(s): [Domain-IL]: 90.63 %
+	Raw accuracy values: Domain-IL [90.79, 90.2, 87.75, 90.99000000000001, 90.94, 90.75, 90.53, 94.72, 93.75, 90.11, 90.79, 86.22, 95.78, 76.87, 95.93, 90.11, 89.66, 90.05, 90.64, 95.98]
+
+

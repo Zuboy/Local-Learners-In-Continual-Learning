@@ -123,3 +123,7 @@ venv/
 *.pth
 *.ckpt
 *.zip
+
+!pegasus-logs/logs/
+!pegasus-logs/data/
+!pegasus-logs/**/*.pyd

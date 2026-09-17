@@ -1,0 +1,4 @@
+Job 3375857: Running on node(s) kusel
+Job 3375857: Started at 2026-09-09 12:11:18+0200
+Monitor this job here: http://monitoring.pegasus.kl.dfki.de/d/slurm-job-details/job-details?var-jobid=3375857&from=1788948678000
+/var/spool/slurm/d/job3375857/slurm_script: line 18: unexpected EOF while looking for matching `''

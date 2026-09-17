@@ -1,0 +1,231 @@
+[INFO] 02-Aug-26 04:44:38 - Running Mammoth! on kusel. 
+[WARNING] 02-Aug-26 04:44:38 - Warning: python-dotenv not installed. Ignoring .env file.
+[INFO] 02-Aug-26 04:44:40 - Loaded ViT-B-16 model config.
+[INFO] 02-Aug-26 04:44:41 - HTTP Request: GET https://huggingface.co/api/agent-harnesses "HTTP/1.1 200 OK"
+[INFO] 02-Aug-26 04:44:41 - HTTP Request: HEAD https://huggingface.co/timm/vit_base_patch16_clip_224.openai/resolve/main/open_clip_model.safetensors "HTTP/1.1 302 Found"
+[WARNING] 02-Aug-26 04:44:41 - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[INFO] 02-Aug-26 04:44:41 - Loading pretrained ViT-B-16 weights (openai).
+[WARNING] 02-Aug-26 04:44:42 - Error in model starprompt
+[WARNING] 02-Aug-26 04:44:42 - Please install the CLIP package by running: pip install git+https://github.com/openai/CLIP.git (requires also `huggingface-hub`)
+[WARNING] 02-Aug-26 04:44:42 - Error in model lws
+[WARNING] 02-Aug-26 04:44:42 - kmeans_pytorch not installed. Please run `pip install kmeans-pytorch`.
+[WARNING] 02-Aug-26 04:44:42 - Error in model clip
+[WARNING] 02-Aug-26 04:44:42 - Please install the CLIP package by running: pip install git+https://github.com/openai/CLIP.git
+[WARNING] 02-Aug-26 04:44:42 - Error in model first-stage-starprompt
+[WARNING] 02-Aug-26 04:44:42 - Error in model tak
+[WARNING] 02-Aug-26 04:44:42 - Error in model llava
+[WARNING] 02-Aug-26 04:44:42 - Please install the HuggingFace Transformers package by running: pip install transformers
+[WARNING] 02-Aug-26 04:44:42 - Error in model icarl-casper
+[WARNING] 02-Aug-26 04:44:42 - No module named 'xitorch'
+[WARNING] 02-Aug-26 04:44:42 - Error in model second-stage-starprompt
+[WARNING] 02-Aug-26 04:44:42 - Error in model derpp-casper
+[WARNING] 02-Aug-26 04:44:43 - Error in model er-ace-casper
+[WARNING] 02-Aug-26 04:44:43 - Error in model xder-rpc-casper
+[WARNING] 02-Aug-26 04:44:43 - Error in model cgil
+[INFO] 02-Aug-26 04:44:43 - Trying to load default configuration for model local-er but no configuration file found in None.
+[WARNING] 02-Aug-26 04:44:43 - Default configuration file not found for dataset rot-mnist. Using the defaults specified in the dataset class (if available).
+[ERROR] 02-Aug-26 04:44:44 - Could not retrieve git hash.
+[INFO] 02-Aug-26 04:44:44 - 
+╔═══════════════════════ CONFIGURATION ═══════════════════════╗
+║ Basic arguments:
+║   • backbone: local-mnistmlp
+║   • dataset: rot-mnist
+║   • load_best_args: False
+║   • model: local-er
+║
+║ Configuration arguments:
+║   • model_config: default
+║
+║ Backbone arguments:
+║   • mlp_hidden_size: 100
+║
+║ Management arguments:
+║   • base_path: /netscratch/chandel/mammoth-runtime/data
+║   • checkpoint_path: ./checkpoints/
+║   • code_optimization: 0
+║   • debug_mode: False
+║   • disable_log: False
+║   • distributed: no
+║   • enable_other_metrics: False
+║   • inference_only: False
+║   • non_verbose: True
+║   • num_workers: 4
+║   • permute_classes: False
+║   • results_path: ../results
+║   • save_after_interrupt: True
+║   • save_checkpoint_mode: safe
+║   • seed: 0
+║
+║ Wandb arguments:
+║
+║ Experiment arguments:
+║   • batch_size: 128
+║   • eval_future: False
+║   • joint: 0
+║   • label_perc: 1.000000
+║   • label_perc_by_class: 1.000000
+║   • lr: 0.100000
+║
+║ Validation and fitting arguments:
+║   • early_stopping_epsilon: 0.000001
+║   • early_stopping_freq: 1
+║   • early_stopping_metric: loss
+║   • early_stopping_patience: 5
+║   • fitting_mode: epochs
+║   • n_epochs: 1
+║   • validation_mode: current
+║
+║ Optimizer and learning rate scheduler arguments:
+║   • drop_last: False
+║   • lr_milestones: []
+║   • optim_mom: 0.000000
+║   • optim_nesterov: False
+║   • optim_wd: 0.000000
+║   • optimizer: sgd
+║   • sched_multistep_lr_gamma: 0.100000
+║   • scheduler_mode: epoch
+║
+║ Noise arguments:
+║   • cache_path_noisy_labels: noisy_labels
+║   • disable_noisy_labels_cache: False
+║   • noise_rate: 0.000000
+║   • noise_type: symmetric
+║
+╚════════════════════════════════════════════════════════════╝
+[INFO] 02-Aug-26 04:44:44 - Using device cuda:0
+[INFO] 02-Aug-26 04:44:44 - `wandb_entity` and `wandb_project` not set. Disabling wandb.
+[INFO] 02-Aug-26 04:44:44 - Using backbone: local-mnistmlp
+[INFO] 02-Aug-26 04:44:44 - Using LocalMNISTMLP as backbone
+[INFO] 02-Aug-26 04:44:44 - No transform provided.
+[INFO] 02-Aug-26 04:44:44 - Current working directory: /netscratch/chandel/mammoth.
+[INFO] 02-Aug-26 04:44:44 - Main process PID: 2980162
+[INFO] 02-Aug-26 04:44:44 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:44:44 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:44:45 - Task 1
+STOP ITERATION
+[INFO] 02-Aug-26 04:44:50 - Accuracy for 1 task(s): [Domain-IL]: 90.44 %
+[INFO] 02-Aug-26 04:44:50 - 	Raw accuracy values: Domain-IL [90.44]
+[INFO] 02-Aug-26 04:44:51 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:44:51 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:44:51 - Task 2
+STOP ITERATION
+[INFO] 02-Aug-26 04:44:57 - Accuracy for 2 task(s): [Domain-IL]: 84.56 %
+[INFO] 02-Aug-26 04:44:57 - 	Raw accuracy values: Domain-IL [79.71000000000001, 89.41]
+[INFO] 02-Aug-26 04:44:57 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:44:57 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:44:58 - Task 3
+STOP ITERATION
+[INFO] 02-Aug-26 04:45:05 - Accuracy for 3 task(s): [Domain-IL]: 83.25 %
+[INFO] 02-Aug-26 04:45:05 - 	Raw accuracy values: Domain-IL [83.43, 74.92999999999999, 91.4]
+[INFO] 02-Aug-26 04:45:05 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:45:05 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:45:05 - Task 4
+STOP ITERATION
+[INFO] 02-Aug-26 04:45:13 - Accuracy for 4 task(s): [Domain-IL]: 85.22 %
+[INFO] 02-Aug-26 04:45:13 - 	Raw accuracy values: Domain-IL [84.84, 70.67999999999999, 92.58999999999999, 92.78]
+[INFO] 02-Aug-26 04:45:13 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:45:13 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:45:13 - Task 5
+STOP ITERATION
+[INFO] 02-Aug-26 04:45:21 - Accuracy for 5 task(s): [Domain-IL]: 86.36 %
+[INFO] 02-Aug-26 04:45:21 - 	Raw accuracy values: Domain-IL [91.53999999999999, 75.22999999999999, 85.56, 86.98, 92.49000000000001]
+[INFO] 02-Aug-26 04:45:22 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:45:22 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:45:22 - Task 6
+STOP ITERATION
+[INFO] 02-Aug-26 04:45:31 - Accuracy for 6 task(s): [Domain-IL]: 79.48 %
+[INFO] 02-Aug-26 04:45:31 - 	Raw accuracy values: Domain-IL [83.12, 60.550000000000004, 81.78999999999999, 81.86, 78.29, 91.29]
+[INFO] 02-Aug-26 04:45:31 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:45:31 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:45:32 - Task 7
+STOP ITERATION
+[INFO] 02-Aug-26 04:45:41 - Accuracy for 7 task(s): [Domain-IL]: 81.57 %
+[INFO] 02-Aug-26 04:45:41 - 	Raw accuracy values: Domain-IL [81.91000000000001, 61.42999999999999, 88.92999999999999, 87.46000000000001, 75.26, 82.88, 93.10000000000001]
+[INFO] 02-Aug-26 04:45:41 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:45:41 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:45:42 - Task 8
+STOP ITERATION
+[INFO] 02-Aug-26 04:45:52 - Accuracy for 8 task(s): [Domain-IL]: 82.35 %
+[INFO] 02-Aug-26 04:45:52 - 	Raw accuracy values: Domain-IL [80.67, 60.129999999999995, 89.67, 87.68, 73.22, 78.83, 94.27, 94.34]
+[INFO] 02-Aug-26 04:45:52 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:45:52 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:45:52 - Task 9
+STOP ITERATION
+[INFO] 02-Aug-26 04:46:03 - Accuracy for 9 task(s): [Domain-IL]: 84.15 %
+[INFO] 02-Aug-26 04:46:03 - 	Raw accuracy values: Domain-IL [83.74000000000001, 59.61, 94.1, 92.95, 73.07000000000001, 72.28999999999999, 93.0, 93.67, 94.95]
+[INFO] 02-Aug-26 04:46:04 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:46:04 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:46:04 - Task 10
+STOP ITERATION
+[INFO] 02-Aug-26 04:46:16 - Accuracy for 10 task(s): [Domain-IL]: 83.04 %
+[INFO] 02-Aug-26 04:46:16 - 	Raw accuracy values: Domain-IL [78.61, 52.93, 86.56, 84.78, 68.08, 91.85, 92.84, 92.02, 88.41, 94.28]
+[INFO] 02-Aug-26 04:46:16 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:46:16 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:46:16 - Task 11
+STOP ITERATION
+[INFO] 02-Aug-26 04:46:29 - Accuracy for 11 task(s): [Domain-IL]: 85.58 %
+[INFO] 02-Aug-26 04:46:29 - 	Raw accuracy values: Domain-IL [81.39, 55.279999999999994, 93.97999999999999, 92.75, 68.96, 81.74, 94.48, 94.75, 94.92, 87.94, 95.16]
+[INFO] 02-Aug-26 04:46:29 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:46:29 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:46:29 - Task 12
+STOP ITERATION
+[INFO] 02-Aug-26 04:46:42 - Accuracy for 12 task(s): [Domain-IL]: 83.11 %
+[INFO] 02-Aug-26 04:46:42 - 	Raw accuracy values: Domain-IL [78.93, 91.85, 85.84, 84.95, 79.0, 65.11, 85.55, 85.81, 87.59, 72.61999999999999, 87.29, 92.83]
+[INFO] 02-Aug-26 04:46:42 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:46:42 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:46:43 - Task 13
+STOP ITERATION
+[INFO] 02-Aug-26 04:46:56 - Accuracy for 13 task(s): [Domain-IL]: 87.11 %
+[INFO] 02-Aug-26 04:46:56 - 	Raw accuracy values: Domain-IL [85.21, 80.65, 95.19999999999999, 94.38, 75.2, 71.06, 91.92, 92.75, 95.33, 78.38000000000001, 95.16, 81.76, 95.43]
+[INFO] 02-Aug-26 04:46:57 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:46:57 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:46:57 - Task 14
+STOP ITERATION
+[INFO] 02-Aug-26 04:47:12 - Accuracy for 14 task(s): [Domain-IL]: 84.74 %
+[INFO] 02-Aug-26 04:47:12 - 	Raw accuracy values: Domain-IL [80.15, 93.05, 88.7, 88.06, 78.53999999999999, 62.19, 84.94, 85.63, 89.2, 69.65, 88.81, 94.12, 89.19, 94.14]
+[INFO] 02-Aug-26 04:47:12 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:47:12 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:47:12 - Task 15
+STOP ITERATION
+[INFO] 02-Aug-26 04:47:27 - Accuracy for 15 task(s): [Domain-IL]: 84.89 %
+[INFO] 02-Aug-26 04:47:27 - 	Raw accuracy values: Domain-IL [76.28, 77.14, 86.39, 84.84, 67.80000000000001, 94.06, 88.47, 87.92999999999999, 87.53999999999999, 92.62, 87.62, 80.51, 87.27000000000001, 80.47, 94.48]
+[INFO] 02-Aug-26 04:47:28 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:47:28 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:47:28 - Task 16
+STOP ITERATION
+[INFO] 02-Aug-26 04:47:44 - Accuracy for 16 task(s): [Domain-IL]: 84.49 %
+[INFO] 02-Aug-26 04:47:44 - 	Raw accuracy values: Domain-IL [76.71, 94.14, 85.53, 84.00999999999999, 73.76, 77.38000000000001, 83.39999999999999, 83.8, 85.84, 78.29, 85.49, 94.04, 86.49, 94.13, 74.53999999999999, 94.31]
+[INFO] 02-Aug-26 04:47:44 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:47:44 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:47:44 - Task 17
+STOP ITERATION
+[INFO] 02-Aug-26 04:48:01 - Accuracy for 17 task(s): [Domain-IL]: 85.8 %
+[INFO] 02-Aug-26 04:48:01 - 	Raw accuracy values: Domain-IL [74.1, 84.03, 84.48, 82.71, 66.45, 94.56, 89.11, 88.0, 86.15, 94.05, 86.25, 85.02, 85.64, 84.91, 94.02000000000001, 84.31, 94.83]
+[INFO] 02-Aug-26 04:48:01 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:48:01 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:48:01 - Task 18
+STOP ITERATION
+[INFO] 02-Aug-26 04:48:19 - Accuracy for 18 task(s): [Domain-IL]: 87.99 %
+[INFO] 02-Aug-26 04:48:19 - 	Raw accuracy values: Domain-IL [75.29, 82.72, 91.85, 89.68, 66.14, 89.79, 95.44, 95.28999999999999, 94.13, 92.39, 94.43, 83.61, 92.9, 83.39, 87.26, 82.95, 90.78, 95.7]
+[INFO] 02-Aug-26 04:48:19 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:48:19 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:48:19 - Task 19
+STOP ITERATION
+[INFO] 02-Aug-26 04:48:37 - Accuracy for 19 task(s): [Domain-IL]: 83.46 %
+[INFO] 02-Aug-26 04:48:37 - 	Raw accuracy values: Domain-IL [70.46, 74.09, 83.81, 81.82000000000001, 61.39, 93.62, 87.77000000000001, 87.71, 85.28999999999999, 90.68, 86.35000000000001, 76.49000000000001, 85.31, 76.37, 94.16, 74.44, 92.89, 88.39, 94.72]
+[INFO] 02-Aug-26 04:48:37 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:48:37 - Using 4 workers for the dataloader.
+[INFO] 02-Aug-26 04:48:38 - Task 20
+STOP ITERATION
+[INFO] 02-Aug-26 04:48:56 - Accuracy for 20 task(s): [Domain-IL]: 85.88 %
+[INFO] 02-Aug-26 04:48:56 - 	Raw accuracy values: Domain-IL [69.69, 76.42, 85.32, 82.95, 60.39, 94.28, 94.42, 93.60000000000001, 88.88000000000001, 95.62, 90.02, 78.27, 87.12, 77.97, 93.5, 76.92999999999999, 95.03, 93.85, 87.36, 96.07]
+[INFO] 02-Aug-26 04:48:56 - System stats:
+[INFO] 02-Aug-26 04:48:56 - 	Initial CPU memory usage: 2250.84 MB
+[INFO] 02-Aug-26 04:48:56 - 	Average CPU memory usage: 2640.62 MB
+[INFO] 02-Aug-26 04:48:56 - 	Final CPU memory usage: 2717.67 MB
+[INFO] 02-Aug-26 04:48:56 - 	Max CPU memory usage: 2708.40 MB
+[INFO] 02-Aug-26 04:48:56 - 	Initial GPU 0 memory usage: 166.00 MB
+[INFO] 02-Aug-26 04:48:56 - 	Average GPU 0 memory usage: 234.00 MB
+[INFO] 02-Aug-26 04:48:56 - 	Final GPU 0 memory usage: 234.00 MB
+[INFO] 02-Aug-26 04:48:56 - 	Max GPU 0 memory usage: 234.00 MB
+[INFO] 02-Aug-26 04:48:56 - Logging results and arguments in /netscratch/chandel/mammoth-runtime/data/../results/domain-il/rot-mnist/local-er/logs.pyd
