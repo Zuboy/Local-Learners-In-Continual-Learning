@@ -180,7 +180,7 @@ class ResNet(MammothBackbone):
         for stride in strides:
             layers.append(block(self.in_planes, planes, stride))
             self.in_planes = planes * block.expansion
-        return nn.Sequential(*layers)
+        return nn.Sequential(*layers) 
 
     def forward(self, x: torch.Tensor, returnt='out') -> torch.Tensor:
         """
