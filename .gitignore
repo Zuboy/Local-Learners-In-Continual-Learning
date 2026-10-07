@@ -15,7 +15,7 @@ err/
 *.code-workspace
 .history/
 __pycache__/
-*.py[cod]
+
 *$py.class
 *.so
 .Python
