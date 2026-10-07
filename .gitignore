@@ -1,8 +1,6 @@
 *.swp
 *.gif
 *.pdf
-data/
-data
 checkpoints
 checkpoints/
 *.png
@@ -92,7 +90,6 @@ dmypy.json
 .pytype/
 cython_debug/
 wandb
-logs
 **/_build/
 _autosummary
 generated
@@ -110,9 +107,9 @@ uv.lock
 vitb16
 
 datasets/
-data/
 checkpoints/
-results/full_logs/
+data/CIFAR10/
+data/MNIST/
 wandb/
 __pycache__/
 .venv/
@@ -127,3 +124,4 @@ venv/
 !pegasus-logs/logs/
 !pegasus-logs/data/
 !pegasus-logs/**/*.pyd
+!data/results/
